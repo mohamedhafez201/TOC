@@ -1,0 +1,95 @@
+graph TD;
+    %% Define Node Styles (Colors & Shapes)
+    classDef mainGoal fill:#6c4f92,stroke:#333,stroke-width:2px,color:#fff;
+    classDef outcome fill:#dcd0e8,stroke:#333,stroke-width:2px,color:#000;
+    classDef output fill:#cfe2f3,stroke:#333,stroke-width:2px,color:#000;
+    classDef assumption fill:#d9ead3,stroke:#556B2F,stroke-width:2px,stroke-dasharray: 5 5,color:#000;
+
+    %% Main Goal
+    A("Improved livelihoods of internally displaced persons (IDPs) in the Delta River Region");
+
+    %% Intermediate Outcomes
+    B1("Improved IDP participation in agricultural production and income-generating activities");
+    B2("Improved or stabilized nutrition among IDPs");
+    B3("Decreased incidence of waterborne disease among IDPs");
+
+    %% Outputs (Left & Center)
+    C1("Agricultural production for IDPs improved");
+    C2("Income-generation activities for IDP increased");
+    C3("Legal status for IDP businesses achieved");
+    C4("IDPs have land and water");
+    C5("Agricultural user groups established");
+    C6("Access to loans increased");
+    C7("Marketing skills improved");
+    C8("Inflation remains stable");
+    C9("Malnourished women and children have access to supplementary and therapeutic support");
+    C10("Feeding practices improved");
+    C11("Infant and young child feeding practice improved");
+    C12("Increased knowledge among mothers' group participants");
+    C13("Food Distribution centers operational");
+    C14("Nutrition surveillance system established");
+
+    %% Outputs (Right Side)
+    D1("IDPs have improved access to safe water supply");
+    D2("Hygiene practices improved");
+    D3("Water points reestablished");
+    D4("Distribution procedures operational");
+    D5("Water vendors trained");
+    D6("Handwashing campaigns in place");
+
+    %% Assumptions / External Factors
+    E1("Host communities receptive");
+    E2("Flooding and drought do not exceed 10-year average");
+    E3("Security doesn't worsen");
+    E4("Government meets status and registration obligations");
+
+    %% Connections
+    B1 --> A;
+    B2 --> A;
+    B3 --> A;
+
+    %% Left Side Connections
+    C1 --> B1;
+    C2 --> B1;
+    C3 --> B1;
+    C4 --> C1;
+    C5 --> C4;
+    C6 --> C2;
+    C7 --> C2;
+    C8 --> C2;
+
+    %% Center Connections
+    C9 --> B2;
+    C10 --> B2;
+    C11 --> C10;
+    C12 --> C11;
+    C13 --> C9;
+    C14 --> C9;
+    
+    %% Right Side Connections
+    D1 --> B3;
+    D2 --> B3;
+    D3 --> D1;
+    D4 --> D1;
+    D6 --> D2;
+    
+    %% Assumption Connections
+    E1 --> B1;
+    E2 --> C1;
+    E3 --> A;
+    E4 --> C3;
+
+    %% Dotted Line Connections
+    B1 -.-> B2;
+    B3 -.-> B2;
+    D5 -.-> D1;
+    A -.-> E3
+
+
+    %% Apply Styles to Nodes
+    class A mainGoal;
+    class B1,B2,B3 outcome;
+    class C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13,C14 output;
+    class D1,D2,D3,D4,D5,D6 output;
+    class E1,E2,E3,E4 assumption;
+    
