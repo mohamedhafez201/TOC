@@ -1,95 +1,674 @@
-graph TD;
-    %% Define Node Styles (Colors & Shapes)
-    classDef mainGoal fill:#6c4f92,stroke:#333,stroke-width:2px,color:#fff;
-    classDef outcome fill:#dcd0e8,stroke:#333,stroke-width:2px,color:#000;
-    classDef output fill:#cfe2f3,stroke:#333,stroke-width:2px,color:#000;
-    classDef assumption fill:#d9ead3,stroke:#556B2F,stroke-width:2px,stroke-dasharray: 5 5,color:#000;
-
-    %% Main Goal
-    A("Improved livelihoods of internally displaced persons (IDPs) in the Delta River Region");
-
-    %% Intermediate Outcomes
-    B1("Improved IDP participation in agricultural production and income-generating activities");
-    B2("Improved or stabilized nutrition among IDPs");
-    B3("Decreased incidence of waterborne disease among IDPs");
-
-    %% Outputs (Left & Center)
-    C1("Agricultural production for IDPs improved");
-    C2("Income-generation activities for IDP increased");
-    C3("Legal status for IDP businesses achieved");
-    C4("IDPs have land and water");
-    C5("Agricultural user groups established");
-    C6("Access to loans increased");
-    C7("Marketing skills improved");
-    C8("Inflation remains stable");
-    C9("Malnourished women and children have access to supplementary and therapeutic support");
-    C10("Feeding practices improved");
-    C11("Infant and young child feeding practice improved");
-    C12("Increased knowledge among mothers' group participants");
-    C13("Food Distribution centers operational");
-    C14("Nutrition surveillance system established");
-
-    %% Outputs (Right Side)
-    D1("IDPs have improved access to safe water supply");
-    D2("Hygiene practices improved");
-    D3("Water points reestablished");
-    D4("Distribution procedures operational");
-    D5("Water vendors trained");
-    D6("Handwashing campaigns in place");
-
-    %% Assumptions / External Factors
-    E1("Host communities receptive");
-    E2("Flooding and drought do not exceed 10-year average");
-    E3("Security doesn't worsen");
-    E4("Government meets status and registration obligations");
-
-    %% Connections
-    B1 --> A;
-    B2 --> A;
-    B3 --> A;
-
-    %% Left Side Connections
-    C1 --> B1;
-    C2 --> B1;
-    C3 --> B1;
-    C4 --> C1;
-    C5 --> C4;
-    C6 --> C2;
-    C7 --> C2;
-    C8 --> C2;
-
-    %% Center Connections
-    C9 --> B2;
-    C10 --> B2;
-    C11 --> C10;
-    C12 --> C11;
-    C13 --> C9;
-    C14 --> C9;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Thesis: Toward a Context-Responsive Gender Marker for Egypt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     
-    %% Right Side Connections
-    D1 --> B3;
-    D2 --> B3;
-    D3 --> D1;
-    D4 --> D1;
-    D6 --> D2;
-    
-    %% Assumption Connections
-    E1 --> B1;
-    E2 --> C1;
-    E3 --> A;
-    E4 --> C3;
+    <!-- Chosen Palette: Earthy Harmony -->
+    <!-- Application Structure Plan: The SPA is structured as a narrative journey. The flow is: 1) Landing section. 2) Research Framework (questions/methodology). 3) A new two-part Discussion section (Interpretation & Implications). 4) "The Problem" (critiques of existing tools). 5) "The Solution" (GEMA principles). 6) An Interactive Dashboard. 7) "How It Works" (lifecycle). 8) Recommendations. This thematic, story-driven architecture was chosen to make the content digestible and persuasive. -->
+    <!-- Visualization & Content Choices: Report Info -> Goal -> Viz/Presentation Method -> Interaction -> Justification -> Library/Method. 1) Critiques of Global Tools -> Goal: Inform/Compare -> Viz: Interactive cards with icons -> Interaction: Click to reveal details/quotes -> Justification: Breaks down complex critiques into digestible pieces. (HTML/CSS). 2) Overall GEMA Performance -> Goal: Compare/Organize -> Viz: Radar Chart -> Interaction: Hover tooltips -> Justification: Provides a powerful, at-a-glance 'shape' of a project's performance across all 5 dimensions. (Chart.js/Canvas). 3) Dimension-Specific Scores -> Goal: Compare/Inform -> Viz: Horizontal Bar Charts -> Interaction: Hover tooltips, dynamically linked to text content -> Justification: Clearly shows scores for each core area. (Chart.js/Canvas). 4) AI Improvement Plan -> Goal: Guide/Advise -> Viz: Text list -> Interaction: Button click to generate -> Justification: Provides dynamic, actionable advice based on user-explored data, enhancing the tool's utility. (Gemini API). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
-    %% Dotted Line Connections
-    B1 -.-> B2;
-    B3 -.-> B2;
-    D5 -.-> D1;
-    A -.-> E3
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8; /* Warm, light beige background */
+            color: #3D352F; /* Dark brown for text */
+        }
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+        }
+        .accent-bg { background-color: #D4C4B8; } /* Muted terracotta/brown */
+        .accent-text { color: #8C5A4F; } /* Dusty terracotta for accents */
+        .highlight-bg { background-color: #EAE3DC; } /* Lighter beige for highlights */
+        .nav-link {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #8C5A4F;
+            transition: width 0.3s ease;
+        }
+        .nav-link.active::after,
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-content {
+            flex-grow: 1;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .prose-custom {
+            max-width: 80ch;
+        }
+        .prose-custom p, .prose-custom li {
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        .gemini-button {
+            background-color: #8C5A4F;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .gemini-button:hover {
+            background-color: #7a4e44;
+        }
+        .gemini-button:disabled {
+            background-color: #b0a199;
+            cursor: not-allowed;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #8C5A4F;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        section {
+            scroll-margin-top: 80px; /* Offset for sticky header */
+        }
+    </style>
+</head>
+<body class="antialiased">
 
+    <!-- Header & Navigation -->
+    <header class="bg-FDFBF8/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold font-serif">
+                <a href="#hero" class="hover:text-gray-700">GEMA Interactive</a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8 text-lg">
+                <a href="#framework" class="nav-link">Framework</a>
+                <a href="#discussion" class="nav-link">Discussion</a>
+                <a href="#problem" class="nav-link">Critiques</a>
+                <a href="#solution" class="nav-link">Solution</a>
+                <a href="#dashboard" class="nav-link">Dashboard</a>
+            </div>
+            <div class="md:hidden">
+                 <!-- Mobile menu button can be added here -->
+            </div>
+        </nav>
+    </header>
 
-    %% Apply Styles to Nodes
-    class A mainGoal;
-    class B1,B2,B3 outcome;
-    class C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13,C14 output;
-    class D1,D2,D3,D4,D5,D6 output;
-    class E1,E2,E3,E4 assumption;
-    
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">From Markers to Meaningful Change</h1>
+                <p class="text-xl md:text-2xl text-gray-600 mb-2 font-serif italic">Critically Examining Gender Evaluation in the Egyptian Development Sector</p>
+                <p class="text-lg text-gray-500 mb-8 max-w-3xl mx-auto">This paper explores the gap between the promise and practice of global gender evaluation tools and introduces GEMA—a new tool designed for the complexities of the Egyptian development sector.</p>
+                
+                <div class="my-12 text-gray-700">
+                    <p class="text-xl font-semibold">Mohamed Hafez</p>
+                    <p class="text-lg">Faculty of Economic and Political Science</p>
+                    <div class="mt-4 text-base text-gray-600">
+                        <p><strong>Thesis Advisor:</strong> Dr. Maha El-said</p>
+                        <p><strong>]Discussion Committee Member:</strong> Dr. Reem Wael</p>
+                    </div>
+                </div>
+
+                <a href="#framework" class="bg-[#8C5A4F] text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-[#7a4e44] transition-colors">Begin the Journey</a>
+            </div>
+        </section>
+
+        <!-- Research Framework Section -->
+        <section id="framework" class="py-20">
+            <div class="container mx-auto px-6 prose-custom">
+                 <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Research Framework</h2>
+                 <div class="grid md:grid-cols-2 gap-x-12 gap-y-8">
+                     <div>
+                        <h3 class="text-2xl font-semibold mb-4 accent-text">Research Questions & Objectives</h3>
+                        <p>This thesis is guided by one central question:</p>
+                        <blockquote class="border-l-4 border-[#D4C4B8] pl-4 italic my-4">
+                            How can a context-responsive, participatory, and feminist-informed Gender Marker tool be developed to better assess gender integration and transformation throughout the project cycle in Egypt’s development sector?
+                        </blockquote>
+                        <p>The primary objective is to design, develop, and pilot such a tool—the Gender Equality Marker Assessment (GEMA)—that addresses the documented shortcomings of existing frameworks.</p>
+                     </div>
+                     <div>
+                        <h3 class="text-2xl font-semibold mb-4 accent-text">Methodology</h3>
+                        <p>A <strong>qualitative-dominant design</strong> was employed, grounded in a feminist evaluation paradigm. This approach values subjective experience and collaborative knowledge creation.</p>
+                        <p class="mt-4">Data was collected via:</p>
+                        <ul class="list-disc list-inside mt-2">
+                            <li><strong>Document Analysis</strong> of existing global gender marker tools.</li>
+                            <li><strong>12 Semi-Structured Interviews</strong> with a purposive sample of practitioners.</li>
+                        </ul>
+                        <div class="mt-4 p-4 bg-highlight-bg rounded-lg">
+                            <h4 class="font-semibold">Interviewee Breakdown:</h4>
+                            <ul class="list-none mt-2 text-sm">
+                                <li><strong>7</strong> from CARE Egypt (Gender Advisors, MEAL Officers, etc.)</li>
+                                <li><strong>2</strong> CSO Project Managers</li>
+                                <li><strong>1</strong> Senior Gender Advisor from Save the Children</li>
+                                <li><strong>2</strong> Independent Consultants</li>
+                            </ul>
+                        </div>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- Discussion Section 1: Interpretation -->
+        <section id="discussion" class="py-20 bg-highlight-bg">
+            <div class="container mx-auto px-6 prose-custom">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Discussion: Interpretation & Contribution</h2>
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 accent-text">Interpretation of Findings</h3>
+                    <p>The research findings confirm the central hypothesis: a significant disconnect exists between the stated intent of gender markers and their practical application. The practitioner interviews revealed that existing tools are often perceived as rigid, context-insensitive, and oriented toward compliance rather than learning. The positive reception of the GEMA tool during piloting, where users described it as a "reflection journey," suggests a strong demand for frameworks that validate their on-the-ground efforts and support genuine, adaptive learning.</p>
+                </div>
+            <br>
+<br>
+                    <p>These findings align closely with established feminist and postcolonial critiques of development. Concepts like the "tyranny of indicators" (Eyben, 2010) and the "evaporation of gender" (Mukhopadhyay, 2014) are not just theoretical; they are the lived realities for practitioners in Egypt. This research contributes to the field by moving beyond critique to offer a tangible solution. The novelty of this work lies in its creation of a field-tested, context-responsive tool (GEMA) that operationalizes feminist evaluation principles and provides a practical alternative to the mainstream, compliance-driven models.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Problem Section -->
+        <section id="problem" class="py-20 bg-highlight-bg">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-3">The Central Tension: Critiques of Global Gender Markers</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">Analysis of existing tools reveals a persistent gap between their theoretical purpose and transformative impact. My research identifies four key areas of concern.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="card bg-FDFBF8 p-6 rounded-lg border border-gray-200">
+                        <div class="card-content">
+                            <div class="accent-text mb-3 text-3xl">🎛️</div>
+                            <h3 class="text-xl font-bold mb-2">Learning vs. Compliance</h3>
+                            <p class="text-gray-600">Tools are often reduced to a "compliance tool" for donors. This fosters a culture of 'scoring well' over honest reflection and aligns with critiques of an "audit culture" where accountability to donors overshadows learning (Eyben, 2010).</p>
+                        </div>
+                    </div>
+                    <div class="card bg-FDFBF8 p-6 rounded-lg border border-gray-200">
+                        <div class="card-content">
+                            <div class="accent-text mb-3 text-3xl">📉</div>
+                            <h3 class="text-xl font-bold mb-2">Integration vs. Transformation</h3>
+                            <p class="text-gray-600 mb-4">Markers reward procedural inputs (e.g., counting participants) but fail to capture true transformation in power and agency. This reflects how mainstreaming can be "emptied of its political punch" (Mukhopadhyay, 2014).</p>
+                            <p class="text-sm text-gray-500 italic p-3 bg-gray-50 rounded">"We’ve had projects score 3 or even 4... but women still had no say in the decisions."</p>
+                        </div>
+                    </div>
+                    <div class="card bg-FDFBF8 p-6 rounded-lg border border-gray-200">
+                        <div class="card-content">
+                            <div class="accent-text mb-3 text-3xl">🌍</div>
+                            <h3 class="text-xl font-bold mb-2">Context-Insensitive</h3>
+                            <p class="text-gray-600">Global tools carry a "Northern" logic, ignoring local barriers in Egypt like male guardianship, mobility restrictions, and informal norms. This echoes postcolonial critiques of universalized models (Abu-Lughod, 2002).</p>
+                        </div>
+                    </div>
+                    <div class="card bg-FDFBF8 p-6 rounded-lg border border-gray-200">
+                        <div class="card-content">
+                            <div class="accent-text mb-3 text-3xl">🔍</div>
+                            <h3 class="text-xl font-bold mb-2">Lack of Intersectionality</h3>
+                            <p class="text-gray-600 mb-4">Tools homogenize "women," making invisible the layered experiences of the most marginalized (rural, disabled, refugee women). This perpetuates a core failure identified by Crenshaw (1989).</p>
+                            <p class="text-sm text-gray-500 italic p-3 bg-gray-50 rounded">"...the tool doesn’t ask the right questions. It just asks if women were considered, without asking which women."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Solution Section -->
+        <section id="solution" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-3">The Way Forward: A Reimagined Tool</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">The discussion points to a clear need for a tool that is built on four key principles. This is the foundation of the GEMA framework.</p>
+                </div>
+                <div class="max-w-5xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                    <div>
+                        <div class="p-4 bg-highlight-bg rounded-full inline-block mb-3 text-2xl">🤝</div>
+                        <h3 class="text-xl font-bold mb-2">Participatory & Reflective</h3>
+                        <p class="text-gray-600">Used as a facilitation tool for team dialogue, not an isolated form.</p>
+                    </div>
+                    <div>
+                        <div class="p-4 bg-highlight-bg rounded-full inline-block mb-3 text-2xl">🔄</div>
+                        <h3 class="text-xl font-bold mb-2">Adaptive & Iterative</h3>
+                        <p class="text-gray-600">Applied throughout the project cycle to guide real-time learning.</p>
+                    </div>
+                    <div>
+                        <div class="p-4 bg-highlight-bg rounded-full inline-block mb-3 text-2xl">🌱</div>
+                        <h3 class="text-xl font-bold mb-2">Transformative in Focus</h3>
+                        <p class="text-gray-600">Moves beyond proxies to assess shifts in power, agency, and norms.</p>
+                    </div>
+                    <div>
+                        <div class="p-4 bg-highlight-bg rounded-full inline-block mb-3 text-2xl">🎯</div>
+                        <h3 class="text-xl font-bold mb-2">Context-Responsive</h3>
+                        <p class="text-gray-600">Grounded in local realities and prompts for intersectional analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Interactive Dashboard Section -->
+        <section id="dashboard" class="py-20 bg-highlight-bg">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-3">Interactive GEMA Dashboard</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">Explore the performance of a sample project using the GEMA tool. The radar chart shows the overall score, and the tabs below allow you to dive into each dimension.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-5 gap-12 items-start">
+                    <div class="lg:col-span-2">
+                        <h3 class="text-xl font-bold text-center mb-4">Overall Project Performance</h3>
+                        <div class="chart-container">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-3">
+                        <div class="mb-4 border-b border-gray-300">
+                            <nav class="-mb-px flex space-x-6 overflow-x-auto" aria-label="Tabs" id="dimensionTabs">
+                                <!-- Tabs will be dynamically generated here -->
+                            </nav>
+                        </div>
+                        <div id="dimensionContent" class="bg-FDFBF8 p-6 rounded-lg border border-gray-200 min-h-[400px]">
+                            <!-- Content will be dynamically loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="howitworks" class="py-20">
+             <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-3">How GEMA is Used: A Project Lifecycle</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">GEMA is not a one-time check. It's an iterative tool used at key phases to guide learning and adaptation.</p>
+                </div>
+                <div class="relative">
+                    <div class="hidden md:block absolute top-5 left-0 w-full h-0.5 bg-gray-200"></div>
+                    <div class="grid md:grid-cols-3 gap-12 relative">
+                        <div class="text-center">
+                            <div class="relative mb-4">
+                                <div class="w-10 h-10 rounded-full bg-[#8C5A4F] text-white flex items-center justify-center mx-auto text-lg font-bold z-10 relative">1</div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Design & Planning</h3>
+                            <p class="text-gray-600">The first 3 dimensions are scored to establish a baseline, create an improvement plan, and embed gender outcomes into the project's M&E framework from the start.</p>
+                        </div>
+                         <div class="text-center">
+                            <div class="relative mb-4">
+                                <div class="w-10 h-10 rounded-full bg-[#8C5A4F] text-white flex items-center justify-center mx-auto text-lg font-bold z-10 relative">2</div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Implementation & Adaptation</h3>
+                            <p class="text-gray-600">Scores are revisited mid-project. The "Implementation" dimension is assessed, and low scores trigger the improvement plan, ensuring the project adapts to reality.</p>
+                        </div>
+                         <div class="text-center">
+                            <div class="relative mb-4">
+                                <div class="w-10 h-10 rounded-full bg-[#8C5A4F] text-white flex items-center justify-center mx-auto text-lg font-bold z-10 relative">3</div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Outcomes & Learning</h3>
+                            <p class="text-gray-600">At the endline, the final "Outcomes" dimension is scored. The team reflects on the entire journey, documenting lessons for future projects.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommendations Section -->
+        <section id="recommendations" class="py-20 bg-highlight-bg">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-3">Recommendations for the Future</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">This research points toward a necessary shift in how we approach gender accountability. The goal is to foster systems that are contextual, participatory, and truly transformative.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-FDFBF8 p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-xl font-bold mb-2 accent-text">For Policy</h3>
+                        <p class="text-gray-600">Donors should move beyond high scores, rewarding honest reflection and improvement plans. Promote the co-design of localized markers and allow for narrative evidence alongside numeric scores.</p>
+                    </div>
+                    <div class="bg-FDFBF8 p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-xl font-bold mb-2 accent-text">For Practice</h3>
+                        <p class="text-gray-600">Embed GEMA into the project cycle. Train teams in participatory scoring and feminist evaluation. Create safe spaces for honest reflection, linking results to organizational learning systems.</p>
+                    </div>
+                    <div class="bg-FDFBF8 p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-xl font-bold mb-2 accent-text">For Research</h3>
+                        <p class="text-gray-600">Further validate GEMA across diverse contexts in Egypt. Conduct longitudinal studies on its impact on staff attitudes and program outcomes. Compare its effectiveness against global markers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Conclusion Section -->
+        <section id="conclusion" class="py-20">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Conclusion of the Discussion</h2>
+                <div class="max-w-4xl mx-auto text-lg text-gray-600 space-y-4">
+                    <p>The gap between the promise and practice of gender markers is not a failure of intent, but a failure of design and approach.</p>
+                    <p>By critically examining these tools through the lens of feminist theory, organizational behavior, and the lived realities of practitioners in Egypt, we can move beyond superficial compliance.</p>
+                    <p class="font-semibold text-gray-800">The goal is to transform gender markers from static checklists into dynamic architectures for learning, accountability, and genuine social change.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Mohamed Hafez. All Rights Reserved.</p>
+            <p class="text-sm text-gray-400 mt-1">An Interactive Presentation of the Master's Thesis: "Toward a Context-Responsive Gender Marker Tool for Egypt," Faculty of Economic and Political Science, Cairo University.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const gemaData = {
+                'D1': {
+                    label: 'Gender Analysis',
+                    summary: 'This dimension assesses the quality and depth of the gender analysis conducted at the project\'s outset, including its understanding of local context, power dynamics, and intersectional identities.',
+                    scores: [
+                        { area: 'Gender Data & Evidence', score: 2 },
+                        { area: 'Power Analysis', score: 1 },
+                        { area: 'Intersectionality', score: 1 },
+                        { area: 'Contextual Understanding', score: 2 },
+                        { area: 'Use of Findings', score: 1 },
+                    ]
+                },
+                'D2': {
+                    label: 'Participation',
+                    summary: 'This dimension evaluates the extent to which the project ensures meaningful, inclusive, and safe participation for all gender groups, moving beyond simple attendance to active involvement in decision-making.',
+                    scores: [
+                        { area: 'Access to Participation', score: 3 },
+                        { area: 'Voice & Influence', score: 2 },
+                        { area: 'Inclusive Decision-Making', score: 1 },
+                        { area: 'Safe & Enabling Environment', score: 2 },
+                        { area: 'Feedback Mechanisms', score: 2 },
+                    ]
+                },
+                'D3': {
+                    label: 'Organizational Commitment',
+                    summary: 'This dimension examines the institutional support for gender integration, including leadership buy-in, budget allocation, staff capacity, and internal accountability mechanisms.',
+                    scores: [
+                        { area: 'Leadership & Accountability', score: 2 },
+                        { area: 'Gender Budgeting', score: 1 },
+                        { area: 'Staff Capacity & Expertise', score: 2 },
+                        { area: 'Gender in MEAL Systems', score: 2 },
+                        { area: 'Institutional Policies', score: 1 },
+                    ]
+                },
+                'D4': {
+                    label: 'Implementation',
+                    summary: 'This dimension assesses whether the project\'s gender strategies are being actively implemented, monitored, and adapted in response to new information or changing contexts.',
+                    scores: [
+                        { area: 'Targeted Gender Activities', score: 3 },
+                        { area: 'Gender Mainstreaming', score: 2 },
+                        { area: 'Adaptive Management', score: 2 },
+                        { area: 'Monitoring & Review', score: 2 },
+                        { area: 'Partnership & Collaboration', score: 3 },
+                    ]
+                },
+                'D5': {
+                    label: 'Outcomes',
+                    summary: 'This dimension evaluates the ultimate impact of the project on gender equality, focusing on tangible changes in agency, norms, access to resources, and structural barriers.',
+                    scores: [
+                        { area: 'Women\'s Agency & Empowerment', score: 2 },
+                        { area: 'Changes in Social Norms', score: 1 },
+                        { area: 'Access to Resources/Services', score: 3 },
+                        { area: 'Reduction of Gender Barriers', score: 1 },
+                        { area: 'Sustainability', score: 2 },
+                    ]
+                }
+            };
+            
+            const tabContainer = document.getElementById('dimensionTabs');
+            const contentContainer = document.getElementById('dimensionContent');
+            let activeChart = null;
+            let currentDimension = 'D1';
+            let isLoading = false;
+
+            async function generateAIPlan(dimensionKey) {
+                if (isLoading) return;
+                isLoading = true;
+
+                const dimensionData = gemaData[dimensionKey];
+                const button = document.getElementById('gemini-btn');
+                const outputContainer = document.getElementById('ai-plan-output');
+                
+                button.disabled = true;
+                button.innerHTML = '<div class="loader mr-2"></div> Generating...';
+                outputContainer.innerHTML = '';
+
+                const lowScores = dimensionData.scores.filter(s => s.score < 2);
+                if (lowScores.length === 0) {
+                    outputContainer.innerHTML = '<p class="text-green-700">This dimension is performing well! No critical improvement areas identified.</p>';
+                    button.innerHTML = '✨ Generate AI Improvement Plan';
+                    button.disabled = false;
+                    isLoading = false;
+                    return;
+                }
+
+                const lowScoreText = lowScores.map(s => `- ${s.area} (Score: ${s.score}/3)`).join('\n');
+
+                const prompt = `
+                    You are an expert gender and development advisor. For a development project in Egypt, the following dimension of the GEMA (Gender Equality Marker Assessment) tool shows areas for improvement:
+
+                    Dimension: "${dimensionData.label}"
+                    Dimension Summary: "${dimensionData.summary}"
+
+                    The specific core areas with low scores are:
+                    ${lowScoreText}
+
+                    Based on this information, generate a practical, context-aware improvement plan for the project team. Provide a bulleted list of 3-4 concrete, actionable suggestions. The tone should be encouraging and practical. Start each suggestion with a *.
+                `;
+                
+                try {
+                    let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API request failed with status ${response.status}`);
+                    }
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        const suggestions = text.split('*').filter(s => s.trim() !== '').map(s => `<li>${s.trim()}</li>`).join('');
+                        outputContainer.innerHTML = `<ul class="list-disc list-inside space-y-2 text-gray-700">${suggestions}</ul>`;
+                    } else {
+                        throw new Error("Invalid response structure from API.");
+                    }
+                } catch (error) {
+                    console.error("Gemini API Error:", error);
+                    outputContainer.innerHTML = '<p class="text-red-600">Sorry, we couldn\'t generate suggestions at this time. Please try again later.</p>';
+                } finally {
+                    button.innerHTML = '✨ Regenerate AI Improvement Plan';
+                    button.disabled = false;
+                    isLoading = false;
+                }
+            }
+
+            function renderTabs() {
+                tabContainer.innerHTML = '';
+                Object.keys(gemaData).forEach(key => {
+                    const tab = document.createElement('a');
+                    tab.href = '#';
+                    tab.dataset.dimension = key;
+                    tab.textContent = gemaData[key].label;
+                    tab.className = `nav-link whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${key === currentDimension ? 'active border-[#8C5A4F] text-[#8C5A4F]' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`;
+                    tab.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentDimension = key;
+                        renderTabs();
+                        renderContent();
+                    });
+                    tabContainer.appendChild(tab);
+                });
+            }
+
+            function renderContent() {
+                const data = gemaData[currentDimension];
+                
+                contentContainer.innerHTML = `
+                    <h3 class="text-2xl font-bold font-serif mb-2">${data.label}</h3>
+                    <p class="text-gray-600 mb-6">${data.summary}</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-semibold mb-3 text-lg">Core Area Scores</h4>
+                            <div id="barChartContainer" class="chart-container !h-[250px] !max-w-full">
+                                <canvas id="barChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-3 text-lg">AI-Powered Improvement Plan</h4>
+                            <div class="mb-4">
+                                <button id="gemini-btn" class="gemini-button font-bold py-2 px-4 rounded-full text-sm inline-flex items-center">
+                                    ✨ Generate AI Improvement Plan
+                                </button>
+                            </div>
+                            <div id="ai-plan-output" class="mt-4 min-h-[100px]">
+                                <p class="text-gray-500 italic">Click the button to generate tailored suggestions based on the scores.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('gemini-btn').addEventListener('click', () => generateAIPlan(currentDimension));
+                renderBarChart(data.scores);
+            }
+
+            function renderRadarChart() {
+                const ctx = document.getElementById('radarChart').getContext('2d');
+                const labels = Object.values(gemaData).map(d => d.label);
+                const data = Object.values(gemaData).map(d => {
+                    const totalScore = d.scores.reduce((sum, item) => sum + item.score, 0);
+                    return (totalScore / (d.scores.length * 3)) * 3;
+                });
+
+                new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Project Score',
+                            data: data,
+                            backgroundColor: 'rgba(140, 90, 79, 0.2)',
+                            borderColor: 'rgba(140, 90, 79, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(140, 90, 79, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(140, 90, 79, 1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 3,
+                                pointLabels: {
+                                    font: { size: 12, family: "'Inter', sans-serif" },
+                                    callback: function(label) {
+                                        if (label.length > 15) {
+                                            return label.split(' ').map(word => word.length > 8 ? word.substring(0,8)+'...' : word);
+                                        }
+                                        return label;
+                                    }
+                                },
+                                ticks: { stepSize: 1 }
+                            }
+                        },
+                        plugins: { legend: { position: 'top' } }
+                    }
+                });
+            }
+
+            function renderBarChart(scores) {
+                if (activeChart) activeChart.destroy();
+                const ctx = document.getElementById('barChart').getContext('2d');
+                activeChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: scores.map(s => s.area),
+                        datasets: [{
+                            label: 'Score (out of 3)',
+                            data: scores.map(s => s.score),
+                            backgroundColor: '#D4C4B8',
+                            borderColor: '#8C5A4F',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { beginAtZero: true, max: 3, grid: { display: false } },
+                            y: { grid: { display: false } }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) label += ': ';
+                                        if (context.parsed.x !== null) label += `${context.parsed.x} / 3`;
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            renderRadarChart();
+            renderTabs();
+            renderContent();
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
